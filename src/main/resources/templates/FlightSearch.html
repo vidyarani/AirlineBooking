@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p th:text="'Welcome to TWAirline'"/>
+<form method="post" th:action="@{/search}" th:object="${flight}">
+<p th:text="'Source: '"/>
+<select title="Source" class="form-control" id="source" name="source" th:field="*{source}">
+    <option value="">Select Source</option>
+    <option th:each="city : ${cities}"
+            th:value="${city.id}"
+            th:text="${city.name}"
+            >
+    </option>
+</select>
+<p th:text="'Destination: '"/>
+<select class="form-control" id="destination" name="destination" th:field="*{destination}">
+    <option value="">Select Destination</option>
+    <option th:each="city : ${cities}"
+            th:value="${city.id}"
+            th:text="${city.name}"
+    >
+    </option>
+</select>
+<input type="submit" value="Submit"/>
+</form>
+</body>
+</html>
