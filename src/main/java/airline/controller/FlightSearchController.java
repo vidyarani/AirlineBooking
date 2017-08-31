@@ -18,7 +18,7 @@ import java.util.*;
 @Controller
 public class FlightSearchController {
 
-    @Autowired
+//    @Autowired
     CityRepository cityRepository;
     @Autowired
     FlightSearchService flightSearchService;
