@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightSearchService {
@@ -14,12 +15,10 @@ public class FlightSearchService {
 
     public List<Flight> search(String source, String destination) {
         flightRepository = new FlightRepository();
-        List<Flight> availableFlights = new ArrayList<Flight>();
-
-        for (Flight flight : flightRepository.getFlights()) {
-            if (source.equals(flight.getSource()) && (destination.equals(flight.getDestination())))
-                availableFlights.add(flight);
-        }
-        return availableFlights;
+        List<Flight> flights = flightRepository.getFlights();
+        return flights.stream()
+                .filter(x -> x.getSource().equals(source))
+                .filter(x -> x.getDestination().equals(destination))
+                .collect(Collectors.toList());
     }
 }

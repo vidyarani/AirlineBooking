@@ -11,14 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-/**
- * Created by rajashrk on 8/8/17.
- */
-
 @Controller
 public class FlightSearchController {
 
-//    @Autowired
     CityRepository cityRepository;
     @Autowired
     FlightSearchService flightSearchService;
@@ -28,7 +23,7 @@ public class FlightSearchController {
         cityRepository = new CityRepository();
         List<City> cities = cityRepository.getCities();
         model.addAttribute("cities", cities);
-        model.addAttribute("flight", new Flight("F1","HYD","BLR"));
+        model.addAttribute("flight", new Flight("F1", "HYD", "BLR"));
         return "FlightSearch";
     }
 
@@ -36,8 +31,7 @@ public class FlightSearchController {
     public String getFlights(@ModelAttribute(value = "flight") Flight flight, Model model) {
         flightSearchService = new FlightSearchService();
         List<Flight> availableFlights = flightSearchService.search(flight.getSource(), flight.getDestination());
-        System.out.println("results size: "+availableFlights.size());
-        model.addAttribute("searchResults",availableFlights);
+        model.addAttribute("searchResults", availableFlights);
         return "FlightsView";
     }
 }

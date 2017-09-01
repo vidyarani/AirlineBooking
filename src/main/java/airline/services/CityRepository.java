@@ -1,11 +1,9 @@
 package airline.services;
 
 import airline.model.City;
-import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-//@Service
 public class CityRepository {
 
     //    @ModelAttribute("cities")

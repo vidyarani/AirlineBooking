@@ -3,12 +3,11 @@ package airline.model;
 import java.awt.datatransfer.FlavorListener;
 
 public class Flight {
-    public String flightNumber;
-    public String source;
-    public String destination;
+    private String flightNumber;
+    private String source;
+    private String destination;
 
     public Flight() {
-    
     }
 
     public Flight(String flightNumber, String source, String destination) {
