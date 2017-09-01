@@ -2,16 +2,14 @@ package airline.model;
 
 public class Flight {
     private String flightNumber;
-    private String source;
-    private String destination;
+    private FlightInformation flightInformation;
 
     public Flight() {
     }
 
-    public Flight(String flightNumber, String source, String destination) {
+    public Flight(String flightNumber, FlightInformation flightInformation) {
         this.flightNumber = flightNumber;
-        this.source = source;
-        this.destination = destination;
+        this.flightInformation = flightInformation;
     }
 
     public String getFlightNumber() {
@@ -22,19 +20,11 @@ public class Flight {
         this.flightNumber = flightNumber;
     }
 
-    public String getSource() {
-        return source;
+    public FlightInformation getFlightInformation() {
+        return flightInformation;
     }
 
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public void setFlightInformation(FlightInformation flightInformation) {
+        this.flightInformation = flightInformation;
     }
 }

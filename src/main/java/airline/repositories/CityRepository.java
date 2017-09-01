@@ -1,4 +1,4 @@
-package airline.services;
+package airline.repositories;
 
 import airline.model.City;
 
