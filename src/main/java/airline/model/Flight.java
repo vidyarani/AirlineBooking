@@ -1,7 +1,5 @@
 package airline.model;
 
-import java.awt.datatransfer.FlavorListener;
-
 public class Flight {
     private String flightNumber;
     private String source;
