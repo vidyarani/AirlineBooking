@@ -28,7 +28,14 @@
                     th:text="${city.name}">
             </option>
         </select>
-        <input type="number" min="1" th:field="*{numberOfPassengers}"/>
+        <p th:text="'Number Of Passengers: '"/>
+        <select class="form-control" id="numberOfPassengers" name="numberOfPassengers" th:field="*{numberOfPassengers}">
+            <option th:each="number : ${#numbers.sequence(1,9)}"
+                    th:value="${number}"
+                    th:text="${number}">
+            </option>
+        </select>
+        <!--<input type="number" min="1" max="9" th:field="*{numberOfPassengers}"/>-->
         <input type="submit" value="Submit"/>
     </div>
 </form>

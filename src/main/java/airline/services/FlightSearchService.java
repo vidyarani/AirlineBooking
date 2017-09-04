@@ -6,6 +6,7 @@ import airline.repositories.FlightRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -14,11 +15,24 @@ public class FlightSearchService {
 
     public List<Flight> search(SearchCriteria searchCriteria) {
         flightRepository = new FlightRepository();
-        List<Flight> flights = flightRepository.getFlights();
-        return flights.stream()
-                .filter(x -> x.getFlightInformation().getSource().equals(searchCriteria.getSource()))
-                .filter(x -> x.getFlightInformation().getDestination().equals(searchCriteria.getDestination()))
-                .filter(x -> x.getFlightInformation().getNumberOfAvailableSeats() >= searchCriteria.getNumberOfPassengers())
+        List<Flight> allFlights = flightRepository.getFlights();
+
+        return allFlights.stream()
+                .filter(searchBySource(searchCriteria))
+                .filter(searchByDestination(searchCriteria))
+                .filter(searchByPassengers(searchCriteria))
                 .collect(Collectors.toList());
+    }
+
+    public Predicate<Flight> searchByPassengers(SearchCriteria searchCriteria) {
+        return x -> x.getFlightInformation().getNumberOfAvailableSeats() >= searchCriteria.getNumberOfPassengers();
+    }
+
+    public Predicate<Flight> searchByDestination(SearchCriteria searchCriteria) {
+        return x -> x.getDestination().equals(searchCriteria.getDestination());
+    }
+
+    public Predicate<Flight> searchBySource(SearchCriteria searchCriteria) {
+        return x -> x.getSource().equals(searchCriteria.getSource());
     }
 }
