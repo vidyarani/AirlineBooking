@@ -9,9 +9,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class AirlineBookingTest {
     FlightRepository flightRepository;
@@ -22,7 +21,7 @@ public class AirlineBookingTest {
     public void setUp() {
         flightRepository = new FlightRepository();
         flightSearchService = new FlightSearchService();
-        searchCriteria = new SearchCriteria("HYD", "BLR", 2);
+        searchCriteria = new SearchCriteria();
     }
 
     @Test
@@ -38,29 +37,39 @@ public class AirlineBookingTest {
 
     @Test
     public void shouldRetrieveFlightsStartingFromHyd() {
-        List<Flight> searchResults = convertPredicateToList(flightSearchService.searchBySource(searchCriteria));
+        searchCriteria.setSource("HYD");
+        List<Flight> searchResults = (flightSearchService.search(searchCriteria));
         Assert.assertEquals(3, searchResults.size());
     }
 
     @Test
     public void shouldRetrieveFlightsWithDestinationAsBlr() {
-        List<Flight> searchResults = convertPredicateToList(flightSearchService.searchByDestination(searchCriteria));
+        searchCriteria.setDestination("BLR");
+        List<Flight> searchResults = (flightSearchService.search(searchCriteria));
         Assert.assertEquals(2, searchResults.size());
     }
 
     @Test
     public void shouldRetrieveFlightsThatAccommodateGivenPassengers() {
-        List<Flight> searchResults = convertPredicateToList(flightSearchService.searchByPassengers(searchCriteria));
+        searchCriteria.setNumberOfPassengers(2);
+        List<Flight> searchResults = (flightSearchService.search(searchCriteria));
         Assert.assertEquals(2, searchResults.size());
     }
 
     @Test
-    public void shouldReturnFlightsFromHydToBlr() {
+    public void shouldRetrieveFlightsBySourceAndDestinationIFDepartureDateNotGiven() {
+        searchCriteria.setSource("HYD");
+        searchCriteria.setDestination("BLR");
         List<Flight> searchResults = flightSearchService.search(searchCriteria);
-        Assert.assertEquals(1, searchResults.size());
+        Assert.assertEquals(2, searchResults.size());
     }
 
-    private List<Flight> convertPredicateToList(Predicate<Flight> predicate) {
-        return flightRepository.getFlights().stream().filter(predicate).collect(Collectors.toList());
+    @Test
+    public void shouldRetrieveFlightsFromHydToBlrGivenDate(){
+        searchCriteria.setSource("HYD");
+        searchCriteria.setDestination("BLR");
+        searchCriteria.setDepartureDate(LocalDate.now().toString());
+        List<Flight> searchResults = flightSearchService.search(searchCriteria);
+        Assert.assertEquals(1, searchResults.size());
     }
 }

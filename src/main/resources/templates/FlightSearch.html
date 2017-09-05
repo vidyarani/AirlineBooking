@@ -35,7 +35,8 @@
                     th:text="${number}">
             </option>
         </select>
-        <!--<input type="number" min="1" max="9" th:field="*{numberOfPassengers}"/>-->
+        <p th:text="'Departure Date: '"/>
+        <input type="date" th:field="*{departureDate}" min="2017-09-05"/>
         <input type="submit" value="Submit"/>
     </div>
 </form>

@@ -4,14 +4,9 @@ public class SearchCriteria {
     private String source;
     private String destination;
     private int numberOfPassengers;
+    private String departureDate;
 
     public SearchCriteria() {
-    }
-
-    public SearchCriteria(String source, String destination, int numberOfPassengers) {
-        this.source = source;
-        this.destination = destination;
-        this.numberOfPassengers = numberOfPassengers;
     }
 
     public String getSource() {
@@ -36,5 +31,13 @@ public class SearchCriteria {
 
     public void setNumberOfPassengers(int numberOfPassengers) {
         this.numberOfPassengers = numberOfPassengers;
+    }
+
+    public String getDepartureDate() {
+        return departureDate != null ? departureDate : null;
+    }
+
+    public void setDepartureDate(String departureDate) {
+        this.departureDate = departureDate.equals("") ? null : departureDate;
     }
 }

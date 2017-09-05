@@ -1,17 +1,17 @@
 package airline.model;
 
 public class FlightInformation {
-    private int numberOfAvailableSeats;
+    private int availableSeats;
 
     public FlightInformation(int numberOfAvailableSeats) {
-        this.numberOfAvailableSeats = numberOfAvailableSeats;
+        this.availableSeats = numberOfAvailableSeats;
     }
 
-    public int getNumberOfAvailableSeats() {
-        return numberOfAvailableSeats;
+    public int getAvailableSeats() {
+        return availableSeats;
     }
 
-    public void setNumberOfAvailableSeats(int numberOfAvailableSeats) {
-        this.numberOfAvailableSeats = numberOfAvailableSeats;
+    public void setAvailableSeats(int availableSeats) {
+        this.availableSeats = availableSeats;
     }
 }

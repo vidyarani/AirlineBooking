@@ -8,8 +8,10 @@ import airline.services.FlightSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -23,12 +25,12 @@ public class FlightSearchController {
         cityRepository = new CityRepository();
         List<City> cities = cityRepository.getCities();
         model.addAttribute("cities", cities);
-        model.addAttribute("searchCriteria", new SearchCriteria("HYD", "BLR",1));
+        model.addAttribute("searchCriteria", new SearchCriteria());
         return "FlightSearch";
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public String getFlights(@ModelAttribute(value = "searchCriteria")SearchCriteria searchCriteria, Model model) {
+    public String getFlights(@ModelAttribute(value = "searchCriteria") SearchCriteria searchCriteria, Model model) {
         List<Flight> availableFlights = flightSearchService.search(searchCriteria);
         model.addAttribute("searchResults", availableFlights);
         return "FlightsView";
