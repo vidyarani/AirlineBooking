@@ -5,6 +5,7 @@ public class SearchCriteria {
     private String destination;
     private int numberOfPassengers;
     private String departureDate;
+    private TravelClassType travelClassType;
 
     public SearchCriteria() {
     }
@@ -34,10 +35,18 @@ public class SearchCriteria {
     }
 
     public String getDepartureDate() {
-        return departureDate != null ? departureDate : null;
+        return departureDate;
     }
 
     public void setDepartureDate(String departureDate) {
-        this.departureDate = departureDate.equals("") ? null : departureDate;
+        this.departureDate = ("").equals(departureDate) ? null : departureDate;
+    }
+
+    public TravelClassType getTravelClassType() {
+        return travelClassType;
+    }
+
+    public void setTravelClassType(TravelClassType travelClassType) {
+        this.travelClassType = travelClassType;
     }
 }

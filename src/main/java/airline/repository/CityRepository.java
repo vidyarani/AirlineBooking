@@ -1,12 +1,12 @@
-package airline.repositories;
+package airline.repository;
 
 import airline.model.City;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CityRepository {
 
-    //    @ModelAttribute("cities")
     public List<City> getCities() {
         List<City> cities = new ArrayList<City>();
         cities.add(new City("HYD", "Hyderabad"));

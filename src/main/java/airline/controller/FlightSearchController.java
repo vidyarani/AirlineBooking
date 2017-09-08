@@ -3,34 +3,51 @@ package airline.controller;
 import airline.model.City;
 import airline.model.Flight;
 import airline.model.SearchCriteria;
-import airline.repositories.CityRepository;
-import airline.services.FlightSearchService;
+import airline.model.TravelClassType;
+import airline.service.CityService;
+import airline.service.FlightSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
 
 @Controller
 public class FlightSearchController {
-    CityRepository cityRepository;
     @Autowired
+    private
     FlightSearchService flightSearchService;
 
+    @Autowired
+    private
+    CityService cityService;
+
+    @Autowired
+    FlightSearchController(FlightSearchService flightSearchService) {
+        this.flightSearchService = flightSearchService;
+    }
+
+    @Autowired
+    FlightSearchController(CityService cityService) {
+        this.cityService = cityService;
+    }
+
     @RequestMapping(value = "/airlineTicketing", method = RequestMethod.GET)
-    public String getCities(Model model) {
-        cityRepository = new CityRepository();
-        List<City> cities = cityRepository.getCities();
+    String getCities(Model model) {
+        List<City> cities = cityService.getCities();
         model.addAttribute("cities", cities);
         model.addAttribute("searchCriteria", new SearchCriteria());
+        model.addAttribute("travelClassTypes", TravelClassType.values());
+        model.addAttribute("today", LocalDate.now().toString());
         return "FlightSearch";
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public String getFlights(@ModelAttribute(value = "searchCriteria") SearchCriteria searchCriteria, Model model) {
+    String searchFlights(@ModelAttribute(value = "searchCriteria") SearchCriteria searchCriteria, Model model) {
         List<Flight> availableFlights = flightSearchService.search(searchCriteria);
         model.addAttribute("searchResults", availableFlights);
         return "FlightsView";

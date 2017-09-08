@@ -7,38 +7,57 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous"/>
 </head>
-<body><b>
-    <p th:text="'Welcome to TWAirline'"/></b>
-<form method="post" th:action="@{/search}" th:object="${searchCriteria}">
-    <div class="container">
-        <p th:text="'Source: '"/>
-        <select title="Source" class="form-control" id="source" name="source" th:field="*{source}">
-            <option value="">Select Source</option>
-            <option th:each="city : ${cities}"
-                    th:value="${city.id}"
-                    th:text="${city.name}">
-            </option>
-        </select>
+<body>
+<div class="container">
+    <b>
+        <p th:text="'Welcome to TWAirline'"/></b>
+    <form method="post" th:action="@{/search}" th:object="${searchCriteria}">
 
-        <p th:text="'Destination: '"/>
-        <select class="form-control" id="destination" name="destination" th:field="*{destination}">
-            <option value="">Select Destination</option>
-            <option th:each="city : ${cities}"
-                    th:value="${city.id}"
-                    th:text="${city.name}">
-            </option>
-        </select>
-        <p th:text="'Number Of Passengers: '"/>
-        <select class="form-control" id="numberOfPassengers" name="numberOfPassengers" th:field="*{numberOfPassengers}">
-            <option th:each="number : ${#numbers.sequence(1,9)}"
-                    th:value="${number}"
-                    th:text="${number}">
-            </option>
-        </select>
-        <p th:text="'Departure Date: '"/>
-        <input type="date" th:field="*{departureDate}" min="2017-09-05"/>
+        <div class="form-group">
+            <p th:text="'Source: '"/>
+            <select title="Source" class="form-control" id="source" name="source" th:field="*{source}">
+                <option value="">Select Source</option>
+                <option th:each="city : ${cities}"
+                        th:value="${city.id}"
+                        th:text="${city.name}">
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <p th:text="'Destination: '"/>
+            <select class="form-control" id="destination" name="destination" th:field="*{destination}">
+                <option value="">Select Destination</option>
+                <option th:each="city : ${cities}"
+                        th:value="${city.id}"
+                        th:text="${city.name}">
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <p th:text="'Number Of Passengers: '"/>
+            <select class="form-control" id="numberOfPassengers" name="numberOfPassengers"
+                    th:field="*{numberOfPassengers}">
+                <option th:each="number : ${#numbers.sequence(1,9)}"
+                        th:value="${number}"
+                        th:text="${number}">
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <p th:text="'Departure Date: '"/>
+            <input type="date" th:field="*{departureDate}" th:attr="min=${today}"/>
+            <p th:text="'Select Class of Travel: '"></p>
+            <select class="form-control" id="travelClassType" name="travelClassType" th:field="*{travelClassType}"
+                    required="required">
+                <option value="">Select Class of Travel</option>
+                <option th:each="travelClassType : ${travelClassTypes}"
+                        th:value="${travelClassType}"
+                        th:text="${travelClassType}">
+                </option>
+            </select>
+        </div>
         <input type="submit" value="Submit"/>
-    </div>
-</form>
+    </form>
+</div>
 </body>
 </html>
