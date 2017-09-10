@@ -22,24 +22,24 @@ public class AeroplaneTest {
 
     @Test
     public void shouldReturnZeroWithTravelClassNotProvided(){
-        assertEquals(0,aeroplane.getSeatsByClassType(null));
+        assertEquals(0,aeroplane.getTotalSeatsByClassType(null));
     }
 
     @Test
     public void shouldReturnAvailableSeatsForFirstClass() {
-        int availableSeats = aeroplane.getSeatsByClassType(TravelClassType.FIRST);
-        assertEquals(8, availableSeats);
+        int totalSeats = aeroplane.getTotalSeatsByClassType(TravelClassType.FIRST);
+        assertEquals(8, totalSeats);
     }
 
     @Test
     public void shouldReturnAvailableSeatsForBusinessClass() {
-        int availableSeats = aeroplane.getSeatsByClassType(TravelClassType.BUSINESS);
-        assertEquals(35, availableSeats);
+        int totalSeats = aeroplane.getTotalSeatsByClassType(TravelClassType.BUSINESS);
+        assertEquals(35, totalSeats);
     }
 
     @Test
     public void shouldReturnAvailableSeatsForEconomyClass() {
-        int availableSeats = aeroplane.getSeatsByClassType(TravelClassType.ECONOMY);
-        assertEquals(195, availableSeats);
+        int totalSeats = aeroplane.getTotalSeatsByClassType(TravelClassType.ECONOMY);
+        assertEquals(195, totalSeats);
     }
 }

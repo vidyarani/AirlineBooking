@@ -16,14 +16,16 @@
             <th>Flight Id</th>
             <th>Source</th>
             <th>Destination</th>
+            <th>Total Fare</th>
         </tr>
         </thead>
 
         <tbody>
-        <tr th:each="flight : ${searchResults}">
-            <td th:text="${flight.flightNumber}"/>
-            <td th:text="${flight.source}"/>
-            <td th:text="${flight.destination}"/>
+        <tr th:each="searchResult : ${searchResults}">
+            <td th:text="${searchResult.flight.flightNumber}"/>
+            <td th:text="${searchResult.flight.source}"/>
+            <td th:text="${searchResult.flight.destination}"/>
+            <td th:text="${searchResult.totalFare}"/>
         </tr>
         </tbody>
     </table>

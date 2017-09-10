@@ -6,9 +6,9 @@ public class Aeroplane {
     private String modelName;
     private List<TravelClass> travelClassList;
 
-    public Aeroplane(String modelName, List<TravelClass> travelClassList1) {
+    public Aeroplane(String modelName, List<TravelClass> travelClassList) {
         this.modelName = modelName;
-        this.travelClassList = travelClassList1;
+        this.travelClassList = travelClassList;
     }
 
     private TravelClass getTravelClass(TravelClassType travelClassType) {
@@ -22,10 +22,10 @@ public class Aeroplane {
         return modelName;
     }
 
-    int getSeatsByClassType(TravelClassType travelClassType) {
+    int getTotalSeatsByClassType(TravelClassType travelClassType) {
         TravelClass travelClass = getTravelClass(travelClassType);
         if (travelClass == null)
             return 0;
-        return travelClass.getAvailableSeats();
+        return travelClass.getTotalSeats();
     }
 }

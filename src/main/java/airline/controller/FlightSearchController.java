@@ -1,10 +1,8 @@
 package airline.controller;
 
-import airline.model.City;
-import airline.model.Flight;
-import airline.model.SearchCriteria;
-import airline.model.TravelClassType;
+import airline.model.*;
 import airline.service.CityService;
+import airline.service.FlightFareService;
 import airline.service.FlightSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,20 +17,18 @@ import java.util.List;
 @Controller
 public class FlightSearchController {
     @Autowired
-    private
-    FlightSearchService flightSearchService;
+    private FlightSearchService flightSearchService;
 
     @Autowired
-    private
-    CityService cityService;
+    private CityService cityService;
 
     @Autowired
-    FlightSearchController(FlightSearchService flightSearchService) {
+    private FlightFareService flightFareService;
+
+    @Autowired
+    FlightSearchController(FlightSearchService flightSearchService, CityService cityService, FlightFareService flightFareService) {
         this.flightSearchService = flightSearchService;
-    }
-
-    @Autowired
-    FlightSearchController(CityService cityService) {
+        this.flightFareService = flightFareService;
         this.cityService = cityService;
     }
 
@@ -49,7 +45,8 @@ public class FlightSearchController {
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     String searchFlights(@ModelAttribute(value = "searchCriteria") SearchCriteria searchCriteria, Model model) {
         List<Flight> availableFlights = flightSearchService.search(searchCriteria);
-        model.addAttribute("searchResults", availableFlights);
+        List<SearchResult> searchResults = flightFareService.getFlightsWithTotalFare(availableFlights, searchCriteria);
+        model.addAttribute("searchResults", searchResults);
         return "FlightsView";
     }
 }

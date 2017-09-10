@@ -5,9 +5,10 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -20,9 +21,13 @@ public class FlightTest {
                 new TravelClass(TravelClassType.FIRST, 8),
                 new TravelClass(TravelClassType.BUSINESS, 35),
                 new TravelClass(TravelClassType.ECONOMY, 195));
-        Aeroplane aeroplane = new Aeroplane("Boeing", travelClassList1);
-        flight = new Flight("F1", "HYD", "BLR",
-                LocalDate.of(2017, 9, 06), aeroplane);
+        Aeroplane aeroplane = new Aeroplane("Boeing  777-200LR", travelClassList1);
+
+        Map<TravelClassType, Integer> availableSeats = new HashMap<>();
+        availableSeats.put(TravelClassType.FIRST, 4);
+        availableSeats.put(TravelClassType.BUSINESS, 20);
+        availableSeats.put(TravelClassType.ECONOMY, 100);
+        flight = new Flight("F1", "HYD", "BLR", LocalDate.of(2017, 9, 06), aeroplane, availableSeats);
     }
 
     @Test
@@ -56,17 +61,17 @@ public class FlightTest {
     }
 
     @Test
-    public void shouldReturnAvailableSeatsForFirstClass() throws Exception {
-        assertEquals(8, flight.getAvailableSeatsForClassType(TravelClassType.FIRST));
+    public void shouldCheckIfFlightCanAccommodateForFirstClass() {
+        assertTrue(flight.canAccommodate(4, TravelClassType.FIRST));
     }
 
     @Test
-    public void shouldReturnAvailableSeatsForBusinessClass() throws Exception {
-        assertEquals(35, flight.getAvailableSeatsForClassType(TravelClassType.BUSINESS));
+    public void shouldCheckAvailableSeatsForBusinessClass() {
+        assertTrue(flight.canAccommodate(15, TravelClassType.BUSINESS));
     }
 
     @Test
-    public void shouldReturnAvailableSeatsForEconomyClass() throws Exception {
-        assertEquals(195, flight.getAvailableSeatsForClassType(TravelClassType.ECONOMY));
+    public void shouldCheckAvailableSeatsForEconomyClass() {
+        assertTrue(flight.canAccommodate(50, TravelClassType.ECONOMY));
     }
 }

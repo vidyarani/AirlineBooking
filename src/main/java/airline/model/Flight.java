@@ -1,26 +1,28 @@
 package airline.model;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 public class Flight {
-    private String flightNumber;
-    private String source;
-    private String destination;
-    private LocalDate departureDate;
-    private Aeroplane aeroplane;
+    private final String flightNumber;
+    private final String source;
+    private final String destination;
+    private final LocalDate departureDate;
+    private final Aeroplane aeroplane;
+    private final Map<TravelClassType, Integer> availableSeats;
 
-    public Flight() {
-    }
-
-    public Flight(String flightNumber, String source, String destination,
-                  LocalDate departureDate, Aeroplane aeroplane) {
+    public Flight(String flightNumber, String source, String destination, LocalDate departureDate, Aeroplane aeroplane,
+                  Map<TravelClassType, Integer> availableSeats) {
         this.flightNumber = flightNumber;
         this.source = source;
         this.destination = destination;
         this.departureDate = departureDate;
         this.aeroplane = aeroplane;
+        this.availableSeats = availableSeats;
     }
-
+    public String getModelName(){
+        return aeroplane.getAirPlaneName();
+    }
     public String getFlightNumber() {
         return flightNumber;
     }
@@ -49,15 +51,7 @@ public class Flight {
         return this.departureDate.equals(departureDate);
     }
 
-    int getAvailableSeatsForClassType(TravelClassType travelClassType) {
-        return aeroplane.getSeatsByClassType(travelClassType);
-    }
-
-    public String getAirPlaneName() {
-        return aeroplane.getAirPlaneName();
-    }
-
     public boolean canAccommodate(int numberOfPassengers, TravelClassType travelClassType) {
-        return getAvailableSeatsForClassType(travelClassType) >= numberOfPassengers;
+        return availableSeats.get(travelClassType) >= numberOfPassengers;
     }
 }
