@@ -22,9 +22,9 @@
 
         <tbody>
         <tr th:each="searchResult : ${searchResults}">
-            <td th:text="${searchResult.flight.flightNumber}"/>
-            <td th:text="${searchResult.flight.source}"/>
-            <td th:text="${searchResult.flight.destination}"/>
+            <td th:text="${searchResult.modelName}"/>
+            <td th:text="${searchResult.source}"/>
+            <td th:text="${searchResult.destination}"/>
             <td th:text="${searchResult.totalFare}"/>
         </tr>
         </tbody>

@@ -14,6 +14,18 @@ public class SearchResult {
         this.totalFare = totalFare;
     }
 
+    public String getModelName() {
+        return modelName;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
     public double getTotalFare() {
         return totalFare;
     }
@@ -22,6 +34,6 @@ public class SearchResult {
     public boolean equals(Object object) {
         SearchResult searchResult = (SearchResult) object;
         return (this.modelName.equals(searchResult.modelName) && this.source.equals(searchResult.source) &&
-                this.destination.equals(searchResult.destination) && this.totalFare == searchResult.getTotalFare());
+                this.destination.equals(searchResult.destination) && this.totalFare == searchResult.totalFare);
     }
 }
