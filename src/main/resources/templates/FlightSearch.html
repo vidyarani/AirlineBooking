@@ -15,7 +15,7 @@
 
         <div class="form-group">
             <p th:text="'Source: '"/>
-            <select title="Source" class="form-control" id="source" name="source" th:field="*{source}">
+            <select title="Source" class="form-control" id="source" name="source" th:field="*{source}" required="required">
                 <option value="">Select Source</option>
                 <option th:each="city : ${cities}"
                         th:value="${city.id}"
@@ -25,7 +25,7 @@
         </div>
         <div class="form-group">
             <p th:text="'Destination: '"/>
-            <select class="form-control" id="destination" name="destination" th:field="*{destination}">
+            <select class="form-control" id="destination" name="destination" th:field="*{destination}" required="required">
                 <option value="">Select Destination</option>
                 <option th:each="city : ${cities}"
                         th:value="${city.id}"
