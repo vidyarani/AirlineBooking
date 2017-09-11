@@ -31,13 +31,21 @@ public class FlightFareService {
     }
 
     private SearchResult createSearchResult(SearchCriteria searchCriteria, Flight flight) {
-        return new SearchResult(flight.getFlightNumber(),flight.getModelName(), flight.getSource(), flight.getDestination(),
-                calculateTotalFare(searchCriteria, flight));
+        return new SearchResult(flight.getFlightNumber(), flight.getModelName(), flight.getSource(),
+                flight.getDestination(), calculateTotalFare(searchCriteria, flight));
     }
 
     double calculateTotalFare(SearchCriteria searchCriteria, Flight flight) {
-        return searchCriteria.getNumberOfPassengers() *
-                getBaseFare(flight.getFlightNumber(), searchCriteria.getTravelClassType());
+        TravelClassType travelClassType = searchCriteria.getTravelClassType();
+        int numberOfPassengers = searchCriteria.getNumberOfPassengers();
+        double baseFare = getBaseFare(flight.getFlightNumber(), travelClassType);
+        int percentageOfAvailableSeats = flight.getPercentageOfAvailableSeats(travelClassType);
+
+        if (percentageOfAvailableSeats <= 40)
+            return numberOfPassengers * baseFare;
+        if (percentageOfAvailableSeats <= 90)
+            return numberOfPassengers * (baseFare * 1.03);
+        return numberOfPassengers * (baseFare * 1.06);
     }
 
     private double getBaseFare(String flightNumber, TravelClassType travelClassType) {

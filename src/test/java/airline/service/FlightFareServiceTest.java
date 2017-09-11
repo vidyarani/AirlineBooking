@@ -41,12 +41,30 @@ public class FlightFareServiceTest {
     }
 
     @Test
+    public void shouldReturnTotalFareForFirstClass() {
+        searchCriteria.setNumberOfPassengers(2);
+        searchCriteria.setTravelClassType(TravelClassType.FIRST);
+        when(flightFareRepository.getBaseFare("F1", TravelClassType.FIRST)).thenReturn((double) 30000);
+        double totalFare = flightFareService.calculateTotalFare(searchCriteria, mockFlight);
+        assertEquals(61800, totalFare, 0);
+    }
+
+    @Test
     public void shouldReturnTotalFareForBusinessClass() {
         searchCriteria.setNumberOfPassengers(2);
         searchCriteria.setTravelClassType(TravelClassType.BUSINESS);
         when(flightFareRepository.getBaseFare("F1", TravelClassType.BUSINESS)).thenReturn((double) 13000);
-        double totoalFare = flightFareService.calculateTotalFare(searchCriteria, mockFlight);
-        assertEquals(26000, totoalFare, 0);
+        double totalFare = flightFareService.calculateTotalFare(searchCriteria, mockFlight);
+        assertEquals(26780, totalFare, 0);
+    }
+
+    @Test
+    public void shouldReturnTotalFareForEconomyClass() {
+        searchCriteria.setNumberOfPassengers(2);
+        searchCriteria.setTravelClassType(TravelClassType.ECONOMY);
+        when(flightFareRepository.getBaseFare("F1", TravelClassType.ECONOMY)).thenReturn((double) 10000);
+        double totalFare = flightFareService.calculateTotalFare(searchCriteria, mockFlight);
+        assertEquals(20600, totalFare, 0);
     }
 
     @Test
@@ -55,9 +73,8 @@ public class FlightFareServiceTest {
         searchCriteria.setTravelClassType(TravelClassType.BUSINESS);
         when(flightFareRepository.getBaseFare("F1", TravelClassType.BUSINESS)).thenReturn((double) 13000);
         List<SearchResult> searchResults = flightFareService.getFlightsWithTotalFare(Collections.singletonList(mockFlight), searchCriteria);
-        SearchResult searchResult = new SearchResult("F1", "Boeing  777-200LR","HYD","BLR", 26000);
+        SearchResult searchResult = new SearchResult("F1", "Boeing  777-200LR", "HYD", "BLR", 26780);
         SearchResult[] expectedResults = new SearchResult[]{searchResult};
         assertArrayEquals(expectedResults, searchResults.toArray());
     }
-
 }

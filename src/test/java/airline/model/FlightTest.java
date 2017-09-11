@@ -9,8 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class FlightTest {
     private Flight flight;
@@ -73,5 +72,20 @@ public class FlightTest {
     @Test
     public void shouldCheckAvailableSeatsForEconomyClass() {
         assertTrue(flight.canAccommodate(50, TravelClassType.ECONOMY));
+    }
+
+    @Test
+    public void shouldReturnPercentageOfAvailableSeatsInFirstClass() {
+        assertEquals(50, flight.getPercentageOfAvailableSeats(TravelClassType.FIRST));
+    }
+
+    @Test
+    public void shouldReturnPercentageOfAvailableSeatsInBusinessClass() {
+        assertEquals(57, flight.getPercentageOfAvailableSeats(TravelClassType.BUSINESS));
+    }
+
+    @Test
+    public void shouldReturnPercentageOfAvailableSeatsInEconomyClass() {
+        assertEquals(51, flight.getPercentageOfAvailableSeats(TravelClassType.ECONOMY));
     }
 }

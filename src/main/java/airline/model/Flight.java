@@ -20,9 +20,11 @@ public class Flight {
         this.aeroplane = aeroplane;
         this.availableSeats = availableSeats;
     }
-    public String getModelName(){
+
+    public String getModelName() {
         return aeroplane.getAirPlaneName();
     }
+
     public String getFlightNumber() {
         return flightNumber;
     }
@@ -52,6 +54,16 @@ public class Flight {
     }
 
     public boolean canAccommodate(int numberOfPassengers, TravelClassType travelClassType) {
-        return availableSeats.get(travelClassType) >= numberOfPassengers;
+        return getAvailableSeats(travelClassType) >= numberOfPassengers;
+    }
+
+    private int getAvailableSeats(TravelClassType travelClassType) {
+        return availableSeats.get(travelClassType);
+    }
+
+    public int getPercentageOfAvailableSeats(TravelClassType travelClassType) {
+        int availableSeats = getAvailableSeats(travelClassType);
+        int totalSeats = aeroplane.getTotalSeatsByClassType(travelClassType);
+        return (availableSeats * 100) / totalSeats;
     }
 }
