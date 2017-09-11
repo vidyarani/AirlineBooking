@@ -31,7 +31,7 @@ public class FlightFareService {
     }
 
     private SearchResult createSearchResult(SearchCriteria searchCriteria, Flight flight) {
-        return new SearchResult(flight.getModelName(), flight.getSource(), flight.getDestination(),
+        return new SearchResult(flight.getFlightNumber(),flight.getModelName(), flight.getSource(), flight.getDestination(),
                 calculateTotalFare(searchCriteria, flight));
     }
 

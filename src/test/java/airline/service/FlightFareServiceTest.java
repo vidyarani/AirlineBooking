@@ -55,7 +55,7 @@ public class FlightFareServiceTest {
         searchCriteria.setTravelClassType(TravelClassType.BUSINESS);
         when(flightFareRepository.getBaseFare("F1", TravelClassType.BUSINESS)).thenReturn((double) 13000);
         List<SearchResult> searchResults = flightFareService.getFlightsWithTotalFare(Collections.singletonList(mockFlight), searchCriteria);
-        SearchResult searchResult = new SearchResult("Boeing  777-200LR","HYD","BLR", 26000);
+        SearchResult searchResult = new SearchResult("F1", "Boeing  777-200LR","HYD","BLR", 26000);
         SearchResult[] expectedResults = new SearchResult[]{searchResult};
         assertArrayEquals(expectedResults, searchResults.toArray());
     }

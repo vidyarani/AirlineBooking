@@ -12,8 +12,8 @@
     <b><p th:text="'Flight Search Results'"/></b>
     <table class="table table-bordered">
         <thead>
-        <tr>
-            <th>Flight Id</th>
+        <tr><th>Flight Id</th>
+            <th>Model of Plane</th>
             <th>Source</th>
             <th>Destination</th>
             <th>Total Fare</th>
@@ -22,6 +22,7 @@
 
         <tbody>
         <tr th:each="searchResult : ${searchResults}">
+            <td th:text="${searchResult.flightNumber}"/>
             <td th:text="${searchResult.modelName}"/>
             <td th:text="${searchResult.source}"/>
             <td th:text="${searchResult.destination}"/>
