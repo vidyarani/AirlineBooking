@@ -14,18 +14,21 @@ public class FlightFareRepositoryImpl implements FlightFareRepository {
 
     FlightFareRepositoryImpl() {
         flightFares = new ArrayList<FlightFare>();
-        flightFares.add(new FlightFare("F1", TravelClassType.BUSINESS, 2000));
-        flightFares.add(new FlightFare("F1", TravelClassType.FIRST, 3000));
-        flightFares.add(new FlightFare("F1", TravelClassType.ECONOMY, 1000));
-        flightFares.add(new FlightFare("F2", TravelClassType.ECONOMY, 1000));
-        flightFares.add(new FlightFare("F2", TravelClassType.FIRST, 3000));
-        flightFares.add(new FlightFare("F2", TravelClassType.ECONOMY, 1000));
-        flightFares.add(new FlightFare("F3", TravelClassType.ECONOMY, 1000));
-        flightFares.add(new FlightFare("F3", TravelClassType.FIRST, 3000));
-        flightFares.add(new FlightFare("F3", TravelClassType.ECONOMY, 1000));
-        flightFares.add(new FlightFare("F4", TravelClassType.ECONOMY, 1000));
-        flightFares.add(new FlightFare("F4", TravelClassType.FIRST, 3000));
-        flightFares.add(new FlightFare("F4", TravelClassType.ECONOMY, 1000));
+        flightFares.add(new FlightFare("F1", TravelClassType.BUSINESS, 13000));
+        flightFares.add(new FlightFare("F1", TravelClassType.FIRST, 20000));
+        flightFares.add(new FlightFare("F1", TravelClassType.ECONOMY, 6000));
+
+        flightFares.add(new FlightFare("F2", TravelClassType.BUSINESS, 10000));
+        flightFares.add(new FlightFare("F2", TravelClassType.FIRST, 25000));
+        flightFares.add(new FlightFare("F2", TravelClassType.ECONOMY, 8000));
+
+        flightFares.add(new FlightFare("F3", TravelClassType.BUSINESS, 6000));
+        flightFares.add(new FlightFare("F3", TravelClassType.FIRST, 9000));
+        flightFares.add(new FlightFare("F3", TravelClassType.ECONOMY, 4000));
+
+        flightFares.add(new FlightFare("F4", TravelClassType.BUSINESS, 12000));
+        flightFares.add(new FlightFare("F4", TravelClassType.FIRST, 15000));
+        flightFares.add(new FlightFare("F4", TravelClassType.ECONOMY, 8000));
 
     }
 

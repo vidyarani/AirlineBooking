@@ -9,27 +9,31 @@
 </head>
 <body>
 <div class="container">
-    <b><p th:text="'Flight Search Results'"/></b>
-    <table class="table table-bordered">
-        <thead>
-        <tr><th>Flight Id</th>
-            <th>Model of Plane</th>
-            <th>Source</th>
-            <th>Destination</th>
-            <th>Total Fare</th>
-        </tr>
-        </thead>
+    <form method="get" th:action="@{/airlineTicketing}" th:object="${searchCriteria}">
+        <b><h5 class="text-center p-3 mb-2 bg-info text-white" th:text="'Flight Search Results'"/></b>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Flight Id</th>
+                <th>Model of Plane</th>
+                <th>Source</th>
+                <th>Destination</th>
+                <th>Total Fare</th>
+            </tr>
+            </thead>
 
-        <tbody>
-        <tr th:each="searchResult : ${searchResults}">
-            <td th:text="${searchResult.flightNumber}"/>
-            <td th:text="${searchResult.modelName}"/>
-            <td th:text="${searchResult.source}"/>
-            <td th:text="${searchResult.destination}"/>
-            <td th:text="${searchResult.totalFare}"/>
-        </tr>
-        </tbody>
-    </table>
+            <tbody>
+            <tr th:each="searchResult : ${searchResults}">
+                <td th:text="${searchResult.flightNumber}"/>
+                <td th:text="${searchResult.modelName}"/>
+                <td th:text="${searchResult.source}"/>
+                <td th:text="${searchResult.destination}"/>
+                <td th:text="${searchResult.totalFare}"/>
+            </tr>
+            </tbody>
+        </table>
+        <div class="row justify-content-md-center"><input type="submit" value="Back To Search" class="btn btn-info"/></div>
+    </form>
 </div>
 </body>
 </html>
