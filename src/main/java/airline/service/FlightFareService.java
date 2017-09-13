@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class FlightFareService {
 
-    FlightFareRepository flightFareRepository;
+    private FlightFareRepository flightFareRepository;
 
     @Autowired
     FlightFareService(FlightFareRepository flightFareRepository) {
@@ -23,10 +23,7 @@ public class FlightFareService {
 
     public List<SearchResult> getFlightsWithTotalFare(List<Flight> availableFlights, SearchCriteria searchCriteria) {
         List<SearchResult> searchResults = new ArrayList<SearchResult>();
-        for (Flight flight : availableFlights) {
-            SearchResult searchResult = createSearchResult(searchCriteria, flight);
-            searchResults.add(searchResult);
-        }
+        availableFlights.stream().forEach(flight -> searchResults.add(createSearchResult(searchCriteria, flight)));
         return searchResults;
     }
 
