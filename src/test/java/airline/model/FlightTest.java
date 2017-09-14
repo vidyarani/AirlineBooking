@@ -41,12 +41,12 @@ public class FlightTest {
 
     @Test
     public void shouldReturnTrueIfFlightReachesBLR() {
-        assertTrue(flight.reachesTo("BLR"));
+        assertTrue(flight.departsTo("BLR"));
     }
 
     @Test
     public void shouldReturnFalseIfFlightDoesNotReachPUN() {
-        assertFalse(flight.reachesTo("PUN"));
+        assertFalse(flight.departsTo("PUN"));
     }
 
     @Test

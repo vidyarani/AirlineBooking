@@ -29,27 +29,15 @@ public class Flight {
         return flightNumber;
     }
 
-    public String getSource() {
-        return source;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public LocalDate getDepartureDate() {
-        return departureDate;
-    }
-
     public boolean startsFrom(String source) {
         return this.source.equals(source);
     }
 
-    boolean reachesTo(String destination) {
+    public boolean departsTo(String destination) {
         return this.destination.equals(destination);
     }
 
-    boolean travelsOnDate(LocalDate departureDate) {
+    public boolean travelsOnDate(LocalDate departureDate) {
         return this.departureDate.equals(departureDate);
     }
 

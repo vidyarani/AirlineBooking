@@ -32,7 +32,7 @@ public class FlightSearchService {
     private Predicate<Flight> searchByDepartureDate(String departureDate) {
         return flight ->
                 departureDate == null ||
-                        flight.getDepartureDate().equals(LocalDate.parse(departureDate));
+                        flight.travelsOnDate(LocalDate.parse(departureDate));
     }
 
     private Predicate<Flight> searchByPassengersByClassOfTravel(TravelClassType travelClassType, int numberOfPassengers) {
@@ -45,7 +45,7 @@ public class FlightSearchService {
         return flight ->
                 destination == null ||
                         Objects.equals(destination, "") ||
-                        flight.getDestination().equals(destination);
+                        flight.departsTo(destination);
     }
 
     private Predicate<Flight> searchBySource(String source) {

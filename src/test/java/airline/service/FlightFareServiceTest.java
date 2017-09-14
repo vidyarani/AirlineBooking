@@ -13,12 +13,10 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-//@RunWith(SpringRunner.class)
-//@WebMvcTest(value = FlightFareService.class)
 public class FlightFareServiceTest {
     private FlightFareService flightFareService;
     private SearchCriteria searchCriteria;
-    private Flight mockFlight;
+    private Flight mockFlight, tuesdayFlight;
     private FlightFareRepository flightFareRepository;
 
     @Before
@@ -38,6 +36,9 @@ public class FlightFareServiceTest {
         availableSeats1.put(TravelClassType.ECONOMY, 100);
 
         mockFlight = new Flight("F1", "HYD", "BLR", LocalDate.of(2017, 9, 06), aeroplane, availableSeats1);
+
+        tuesdayFlight = new Flight("F1", "HYD", "BLR", LocalDate.of(2017, 10, 10), aeroplane, availableSeats1);
+
     }
 
     @Test
@@ -46,7 +47,7 @@ public class FlightFareServiceTest {
         searchCriteria.setTravelClassType(TravelClassType.FIRST);
         when(flightFareRepository.getBaseFare("F1", TravelClassType.FIRST)).thenReturn((double) 30000);
         double totalFare = flightFareService.calculateTotalFare(searchCriteria, mockFlight);
-        assertEquals(61800, totalFare, 0);
+        assertEquals(60000, totalFare, 0);
     }
 
     @Test
@@ -55,7 +56,7 @@ public class FlightFareServiceTest {
         searchCriteria.setTravelClassType(TravelClassType.BUSINESS);
         when(flightFareRepository.getBaseFare("F1", TravelClassType.BUSINESS)).thenReturn((double) 13000);
         double totalFare = flightFareService.calculateTotalFare(searchCriteria, mockFlight);
-        assertEquals(26780, totalFare, 0);
+        assertEquals(26000, totalFare, 0);
     }
 
     @Test
@@ -69,12 +70,36 @@ public class FlightFareServiceTest {
 
     @Test
     public void shouldReturnSearchResultsWithTotalFare() {
+        searchCriteria.setSource("HYD");
+        searchCriteria.setDestination("BLR");
         searchCriteria.setNumberOfPassengers(2);
         searchCriteria.setTravelClassType(TravelClassType.BUSINESS);
         when(flightFareRepository.getBaseFare("F1", TravelClassType.BUSINESS)).thenReturn((double) 13000);
         List<SearchResult> searchResults = flightFareService.getFlightsWithTotalFare(Collections.singletonList(mockFlight), searchCriteria);
-        SearchResult searchResult = new SearchResult("F1", "Boeing  777-200LR", "HYD", "BLR", 26780);
+        System.out.println(searchResults.get(0).getTotalFare());
+        SearchResult searchResult = new SearchResult("F1", "Boeing  777-200LR", "HYD", "BLR", 26000.0);
         SearchResult[] expectedResults = new SearchResult[]{searchResult};
         assertArrayEquals(expectedResults, searchResults.toArray());
     }
+
+    @Test
+    public void shouldApply40PercentageIfTravelIsOnMondayForEconomyClass() {
+        searchCriteria.setNumberOfPassengers(2);
+        searchCriteria.setTravelClassType(TravelClassType.ECONOMY);
+        searchCriteria.setDepartureDate(LocalDate.of(2017, 9, 15).toString());
+        when(flightFareRepository.getBaseFare("F1", TravelClassType.ECONOMY)).thenReturn((double) 10000);
+        double totalFare = flightFareService.calculateTotalFare(searchCriteria, mockFlight);
+        assertEquals(20600, totalFare, 0);
+    }
+
+    @Test
+    public void shouldApplyBaseFareIfTravelIsOnTuesdayForEconomyClass() {
+        searchCriteria.setNumberOfPassengers(2);
+        searchCriteria.setTravelClassType(TravelClassType.ECONOMY);
+        searchCriteria.setDepartureDate(LocalDate.of(2017, 9, 15).toString());
+        when(flightFareRepository.getBaseFare("F1", TravelClassType.ECONOMY)).thenReturn((double) 10000);
+        double totalFare = flightFareService.calculateTotalFare(searchCriteria, tuesdayFlight);
+        assertEquals(20600, totalFare, 0);
+    }
+
 }
