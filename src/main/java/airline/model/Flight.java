@@ -1,6 +1,8 @@
 package airline.model;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
 public class Flight {

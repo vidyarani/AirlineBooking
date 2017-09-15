@@ -28,11 +28,6 @@ public class FlightFareService {
         return searchResults;
     }
 
-    private SearchResult createSearchResult(SearchCriteria searchCriteria, Flight flight) {
-        return new SearchResult(flight.getFlightNumber(), flight.getModelName(), searchCriteria.getSource(),
-                searchCriteria.getDestination(), calculateTotalFare(searchCriteria, flight));
-    }
-
     double calculateTotalFare(SearchCriteria searchCriteria, Flight flight) {
         TravelClassType travelClassType = searchCriteria.getTravelClassType();
         int numberOfPassengers = searchCriteria.getNumberOfPassengers();
@@ -61,15 +56,15 @@ public class FlightFareService {
         if (percentageOfAvailableSeats <= 40)
             return baseFare;
         if (percentageOfAvailableSeats <= 90)
-            return baseFare * 1.03;
-        return baseFare * 1.06;
+            return baseFare * 1.3;
+        return baseFare * 1.6;
     }
 
     private double checkAndApplyFareBasedOnDayOfDepartureDate(String departureDate, double fare) {
         if (departureDate != null) {
             String dayOfWeek = LocalDate.parse(departureDate).getDayOfWeek().name();
             if (dayOfWeek.equals("MONDAY") || dayOfWeek.equals("FRIDAY") || dayOfWeek.equals("SUNDAY"))
-                return fare * 1.04;
+                return fare * 1.4;
         }
         return fare;
     }
@@ -84,5 +79,10 @@ public class FlightFareService {
 
     private double getTotalFare(int numberOfPassengers, double baseFare) {
         return numberOfPassengers * baseFare;
+    }
+
+    private SearchResult createSearchResult(SearchCriteria searchCriteria, Flight flight) {
+        return new SearchResult(flight.getFlightNumber(), flight.getModelName(), searchCriteria.getSource(),
+                searchCriteria.getDestination(), calculateTotalFare(searchCriteria, flight));
     }
 }

@@ -116,4 +116,15 @@ public class FlightSearchServiceTest {
         Flight[] expectedResults = new Flight[]{mockRepository.getFlightFromHydToBlr()};
         assertArrayEquals(expectedResults, searchResults.toArray());
     }
+
+    @Test
+    public void shouldRetrieveFlightsFromHydToChennaiIfDateIsLessThan10DaysFromDepartureDate(){
+        searchCriteria.setSource("HYD");
+        searchCriteria.setDestination("CHN");
+        searchCriteria.setDepartureDate(LocalDate.now().plusDays(2).toString());
+        List<Flight> searchResults = flightSearchService.search(searchCriteria);
+        Flight[] expectedResults = new Flight[]{mockRepository.getFlightFromHydToChennai()};
+        assertArrayEquals(expectedResults, searchResults.toArray());
+    }
+
 }

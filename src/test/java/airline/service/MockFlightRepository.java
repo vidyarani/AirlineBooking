@@ -69,19 +69,19 @@ class MockFlightRepository {
         return flights;
     }
 
-    public Flight getFlightFromHydToBlr() {
+    Flight getFlightFromHydToBlr() {
         return flightFromHydToBlr;
     }
 
-    public Flight getFlightFromHydToPune() {
+    Flight getFlightFromHydToPune() {
         return flightFromHydToPune;
     }
 
-    public Flight getFlightFromBlrToPune() {
+    Flight getFlightFromBlrToPune() {
         return flightFromBlrToPune;
     }
 
-    public Flight getFlightFromHydToChennai() {
+    Flight getFlightFromHydToChennai() {
         return flightFromHydToChennai;
     }
 }

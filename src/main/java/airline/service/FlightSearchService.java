@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -21,6 +22,11 @@ public class FlightSearchService {
 
     public List<Flight> search(SearchCriteria searchCriteria) {
         List<Flight> allFlights = flightSearchRepository.getFlights();
+
+        if ((searchCriteria.getDepartureDate() != null) &&
+                (TravelClassType.FIRST.equals(searchCriteria.getTravelClassType())) &&
+                (!(LocalDate.now().compareTo(LocalDate.parse(searchCriteria.getDepartureDate())) <= 10)))
+            return new ArrayList<>();
         return allFlights.stream()
                 .filter(searchBySource(searchCriteria.getSource()))
                 .filter(searchByDestination(searchCriteria.getDestination()))
@@ -29,16 +35,11 @@ public class FlightSearchService {
                 .collect(Collectors.toList());
     }
 
-    private Predicate<Flight> searchByDepartureDate(String departureDate) {
+    private Predicate<Flight> searchBySource(String source) {
         return flight ->
-                departureDate == null ||
-                        flight.travelsOnDate(LocalDate.parse(departureDate));
-    }
-
-    private Predicate<Flight> searchByPassengersByClassOfTravel(TravelClassType travelClassType, int numberOfPassengers) {
-        return flight ->
-                travelClassType == null ||
-                        flight.canAccommodate(numberOfPassengers, travelClassType);
+                source == null ||
+                        Objects.equals(source, "") ||
+                        flight.startsFrom(source);
     }
 
     private Predicate<Flight> searchByDestination(String destination) {
@@ -48,10 +49,16 @@ public class FlightSearchService {
                         flight.departsTo(destination);
     }
 
-    private Predicate<Flight> searchBySource(String source) {
+    private Predicate<Flight> searchByDepartureDate(String departureDate) {
         return flight ->
-                source == null ||
-                        Objects.equals(source, "") ||
-                        flight.startsFrom(source);
+                departureDate == null ||
+                        flight.travelsOnDate(LocalDate.parse(departureDate));
+    }
+
+    private Predicate<Flight> searchByPassengersByClassOfTravel(TravelClassType travelClassType,
+                                                                int numberOfPassengers) {
+        return flight ->
+                travelClassType == null ||
+                        flight.canAccommodate(numberOfPassengers, travelClassType);
     }
 }
