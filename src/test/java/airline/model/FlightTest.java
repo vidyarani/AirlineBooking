@@ -76,16 +76,16 @@ public class FlightTest {
 
     @Test
     public void shouldReturnPercentageOfAvailableSeatsInFirstClass() {
-        assertEquals(50, flight.getPercentageOfAvailableSeats(TravelClassType.FIRST));
+        assertEquals(0.50, flight.getPercentageOfAvailableSeats(TravelClassType.FIRST),0.01);
     }
 
     @Test
     public void shouldReturnPercentageOfAvailableSeatsInBusinessClass() {
-        assertEquals(57, flight.getPercentageOfAvailableSeats(TravelClassType.BUSINESS));
+        assertEquals(0.57, flight.getPercentageOfAvailableSeats(TravelClassType.BUSINESS),0.01);
     }
 
     @Test
     public void shouldReturnPercentageOfAvailableSeatsInEconomyClass() {
-        assertEquals(51, flight.getPercentageOfAvailableSeats(TravelClassType.ECONOMY));
+        assertEquals(0.51, flight.getPercentageOfAvailableSeats(TravelClassType.ECONOMY),0.01);
     }
 }

@@ -8,23 +8,24 @@ import airline.repository.FlightFareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class FlightFareService {
 
-    private FlightFareRepository flightFareRepository;
+    private final SpecialFareCalculatorFactory specialFareCalculatorFactory;
+    private final FlightFareRepository flightFareRepository;
 
     @Autowired
     FlightFareService(FlightFareRepository flightFareRepository) {
         this.flightFareRepository = flightFareRepository;
+        this.specialFareCalculatorFactory = new SpecialFareCalculatorFactory();
     }
 
     public List<SearchResult> getFlightsWithTotalFare(List<Flight> availableFlights, SearchCriteria searchCriteria) {
         List<SearchResult> searchResults = new ArrayList<SearchResult>();
-        availableFlights.stream().forEach(flight -> searchResults.add(createSearchResult(searchCriteria, flight)));
+        availableFlights.forEach(flight -> searchResults.add(createSearchResult(searchCriteria, flight)));
         return searchResults;
     }
 
@@ -32,45 +33,11 @@ public class FlightFareService {
         TravelClassType travelClassType = searchCriteria.getTravelClassType();
         int numberOfPassengers = searchCriteria.getNumberOfPassengers();
         double baseFare = getBaseFare(flight.getFlightNumber(), travelClassType);
-        int percentageOfAvailableSeats = flight.getPercentageOfAvailableSeats(travelClassType);
-        double fareByTravelClass = 0;
 
-        switch (travelClassType) {
-            case ECONOMY:
-                fareByTravelClass = getFareBasedOnPercentageOfAvailableSeats(percentageOfAvailableSeats,
-                        baseFare);break;
-            case BUSINESS:
-                fareByTravelClass = checkAndApplyFareBasedOnDayOfDepartureDate(searchCriteria.getDepartureDate(),
-                        baseFare);break;
-            case FIRST:
-                fareByTravelClass = getFirstClassFareBasedOnDepartureDate(searchCriteria.getDepartureDate(),
-                        baseFare);break;
-            default:
-                fareByTravelClass = baseFare;
-        }
+        FareCalculator fareCalculator = specialFareCalculatorFactory.create(travelClassType, flight, baseFare);
+        double fareByTravelClass = fareCalculator.calculate();
 
         return getTotalFare(numberOfPassengers, fareByTravelClass);
-    }
-
-    private double getFareBasedOnPercentageOfAvailableSeats(int percentageOfAvailableSeats, double baseFare) {
-        if (percentageOfAvailableSeats <= 40)
-            return baseFare;
-        if (percentageOfAvailableSeats <= 90)
-            return baseFare * 1.3;
-        return baseFare * 1.6;
-    }
-
-    private double checkAndApplyFareBasedOnDayOfDepartureDate(String departureDate, double fare) {
-        if (departureDate != null) {
-            String dayOfWeek = LocalDate.parse(departureDate).getDayOfWeek().name();
-            if (dayOfWeek.equals("MONDAY") || dayOfWeek.equals("FRIDAY") || dayOfWeek.equals("SUNDAY"))
-                return fare * 1.4;
-        }
-        return fare;
-    }
-
-    private double getFirstClassFareBasedOnDepartureDate(String departureDate, double baseFare) {
-        return baseFare;
     }
 
     private double getBaseFare(String flightNumber, TravelClassType travelClassType) {

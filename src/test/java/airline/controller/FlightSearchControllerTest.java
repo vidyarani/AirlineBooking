@@ -49,7 +49,8 @@ public class FlightSearchControllerTest {
         flightSearchController = new FlightSearchController(flightSearchService, cityService, flightFareService);
         when(flightSearchService.search(searchCriteria)).thenReturn(availableFlights);
 
-        when(flightFareService.getFlightsWithTotalFare(new ArrayList<Flight>(), searchCriteria)).thenReturn(searchResults);
+        when(flightFareService.getFlightsWithTotalFare(new ArrayList<Flight>(), searchCriteria)).
+                thenReturn(searchResults);
 
         String flightsView = flightSearchController.searchFlights(searchCriteria, model);
         assertEquals("FlightsView", flightsView);

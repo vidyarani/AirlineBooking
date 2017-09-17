@@ -1,8 +1,8 @@
 package airline.model;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.Map;
 
 public class Flight {
@@ -12,6 +12,7 @@ public class Flight {
     private final LocalDate departureDate;
     private final Aeroplane aeroplane;
     private final Map<TravelClassType, Integer> availableSeats;
+    private final DayOfWeek[] SPECIAL_DAYS = new DayOfWeek[]{DayOfWeek.MONDAY, DayOfWeek.FRIDAY, DayOfWeek.SUNDAY};
 
     public Flight(String flightNumber, String source, String destination, LocalDate departureDate, Aeroplane aeroplane,
                   Map<TravelClassType, Integer> availableSeats) {
@@ -47,13 +48,21 @@ public class Flight {
         return getAvailableSeats(travelClassType) >= numberOfPassengers;
     }
 
-    private int getAvailableSeats(TravelClassType travelClassType) {
+    private double getAvailableSeats(TravelClassType travelClassType) {
         return availableSeats.get(travelClassType);
     }
 
-    public int getPercentageOfAvailableSeats(TravelClassType travelClassType) {
-        int availableSeats = getAvailableSeats(travelClassType);
-        int totalSeats = aeroplane.getTotalSeatsByClassType(travelClassType);
-        return (availableSeats * 100) / totalSeats;
+    public double getPercentageOfAvailableSeats(TravelClassType travelClassType) {
+        double availableSeats = getAvailableSeats(travelClassType);
+        double totalSeats = aeroplane.getTotalSeatsByClassType(travelClassType);
+        return (availableSeats) / totalSeats;
+    }
+
+    public boolean departsOnSpecialDays() {
+        return Arrays.asList(SPECIAL_DAYS).contains(departureDate.getDayOfWeek());
+    }
+
+    public LocalDate getDepartureDate() {
+        return departureDate;
     }
 }

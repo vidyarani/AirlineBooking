@@ -17,22 +17,27 @@ import java.util.stream.Collectors;
 @Service
 public class FlightSearchService {
     @Autowired
-    FlightSearchRepository flightSearchRepository;
+    private FlightSearchRepository flightSearchRepository;
 
 
     public List<Flight> search(SearchCriteria searchCriteria) {
         List<Flight> allFlights = flightSearchRepository.getFlights();
 
-        if ((searchCriteria.getDepartureDate() != null) &&
-                (TravelClassType.FIRST.equals(searchCriteria.getTravelClassType())) &&
-                (!(LocalDate.now().compareTo(LocalDate.parse(searchCriteria.getDepartureDate())) <= 10)))
+        if (flightNotReadyToBeBooked(searchCriteria))
             return new ArrayList<>();
         return allFlights.stream()
                 .filter(searchBySource(searchCriteria.getSource()))
                 .filter(searchByDestination(searchCriteria.getDestination()))
-                .filter(searchByPassengersByClassOfTravel(searchCriteria.getTravelClassType(), searchCriteria.getNumberOfPassengers()))
+                .filter(searchByPassengersAndClassOfTravel(searchCriteria.getTravelClassType(),
+                        searchCriteria.getNumberOfPassengers()))
                 .filter(searchByDepartureDate(searchCriteria.getDepartureDate()))
                 .collect(Collectors.toList());
+    }
+
+    private boolean flightNotReadyToBeBooked(SearchCriteria searchCriteria) {
+        return (searchCriteria.getDepartureDate() != null) &&
+                (TravelClassType.FIRST.equals(searchCriteria.getTravelClassType())) &&
+                (!(LocalDate.now().compareTo(LocalDate.parse(searchCriteria.getDepartureDate())) <= 10));
     }
 
     private Predicate<Flight> searchBySource(String source) {
@@ -55,8 +60,8 @@ public class FlightSearchService {
                         flight.travelsOnDate(LocalDate.parse(departureDate));
     }
 
-    private Predicate<Flight> searchByPassengersByClassOfTravel(TravelClassType travelClassType,
-                                                                int numberOfPassengers) {
+    private Predicate<Flight> searchByPassengersAndClassOfTravel(TravelClassType travelClassType,
+                                                                 int numberOfPassengers) {
         return flight ->
                 travelClassType == null ||
                         flight.canAccommodate(numberOfPassengers, travelClassType);
