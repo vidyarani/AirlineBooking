@@ -2,7 +2,11 @@ package airline.service;
 
 import airline.model.Flight;
 
+import java.time.DayOfWeek;
+import java.util.Arrays;
+
 public class FareCalculatorByWeekDay implements FareCalculator {
+    private final DayOfWeek[] SPECIAL_DAYS = new DayOfWeek[]{DayOfWeek.MONDAY, DayOfWeek.FRIDAY, DayOfWeek.SUNDAY};
     private Flight flight;
     private double baseFare;
 
@@ -13,6 +17,8 @@ public class FareCalculatorByWeekDay implements FareCalculator {
 
     @Override
     public double calculate() {
-        return flight.departsOnSpecialDays() ? baseFare + baseFare * PERCENT40 : baseFare;
+        if (Arrays.asList(SPECIAL_DAYS).contains(flight.getDepartureDate().getDayOfWeek()))
+            return baseFare + baseFare * PERCENT40;
+        return baseFare;
     }
 }
