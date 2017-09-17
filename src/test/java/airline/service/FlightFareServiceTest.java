@@ -41,7 +41,7 @@ public class FlightFareServiceTest {
     }
 
     @Test
-    public void shouldReturnTotalFareForFirstClass() {
+    public void shouldApply50PercentOnBaseFareForFirstClassIfFlightDepartsInNext5Days() {
         searchCriteria.setNumberOfPassengers(2);
         searchCriteria.setTravelClassType(TravelClassType.FIRST);
         searchCriteria.setDepartureDate(LocalDate.now().plusDays(5).toString());
@@ -52,21 +52,42 @@ public class FlightFareServiceTest {
     }
 
     @Test
-    public void shouldReturnTotalFareForBusinessClass() {
-        searchCriteria.setNumberOfPassengers(2);
-        searchCriteria.setTravelClassType(TravelClassType.BUSINESS);
-        when(flightFareRepository.getBaseFare("F1", TravelClassType.BUSINESS)).thenReturn((double) 13000);
-        double totalFare = flightFareService.calculateTotalFare(searchCriteria, mockFlight);
-        assertEquals(36400, totalFare, 0);
-    }
-
-    @Test
-    public void shouldReturnTotalFareForEconomyClass() {
-        searchCriteria.setNumberOfPassengers(2);
+    public void shouldApply30PercentExtraOnBaseFareForEconomyClassIfAvailableSeatsIs51Percent() {
+        searchCriteria.setNumberOfPassengers(1);
         searchCriteria.setTravelClassType(TravelClassType.ECONOMY);
         when(flightFareRepository.getBaseFare("F1", TravelClassType.ECONOMY)).thenReturn((double) 10000);
         double totalFare = flightFareService.calculateTotalFare(searchCriteria, mockFlight);
-        assertEquals(26000, totalFare, 0);
+        assertEquals(13000, totalFare, 0);
+    }
+
+    @Test
+    public void shouldApply60PercentExtraOnBaseFareForEconomyClassIfAvailableSeatsIsMoreThan90Percent(){
+        searchCriteria.setNumberOfPassengers(1);
+        searchCriteria.setTravelClassType(TravelClassType.ECONOMY);
+        when(flightFareRepository.getBaseFare("F1", TravelClassType.ECONOMY)).thenReturn((double) 10000);
+
+        Map<TravelClassType, Integer> availableSeats = new HashMap<>();
+        availableSeats.put(TravelClassType.FIRST, 4);
+        availableSeats.put(TravelClassType.BUSINESS, 30);
+        availableSeats.put(TravelClassType.ECONOMY, 180);
+        mockFlight = new Flight("F1", "HYD", "BLR", LocalDate.of(2017, 9, 18), aeroplane, availableSeats);
+        double totalFare = flightFareService.calculateTotalFare(searchCriteria, mockFlight);
+        assertEquals(16000, totalFare, 0);
+    }
+
+    @Test
+    public void shouldBaseFareForEconomyClassIfAvailableSeatsIsLessThan40Percent(){
+        searchCriteria.setNumberOfPassengers(1);
+        searchCriteria.setTravelClassType(TravelClassType.ECONOMY);
+        when(flightFareRepository.getBaseFare("F1", TravelClassType.ECONOMY)).thenReturn((double) 10000);
+
+        Map<TravelClassType, Integer> availableSeats = new HashMap<>();
+        availableSeats.put(TravelClassType.FIRST, 4);
+        availableSeats.put(TravelClassType.BUSINESS, 30);
+        availableSeats.put(TravelClassType.ECONOMY, 10);
+        mockFlight = new Flight("F1", "HYD", "BLR", LocalDate.of(2017, 9, 18), aeroplane, availableSeats);
+        double totalFare = flightFareService.calculateTotalFare(searchCriteria, mockFlight);
+        assertEquals(10000, totalFare, 0);
     }
 
     @Test
