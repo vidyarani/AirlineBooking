@@ -61,7 +61,7 @@ public class FlightFareServiceTest {
     }
 
     @Test
-    public void shouldApply60PercentExtraOnBaseFareForEconomyClassIfAvailableSeatsIsMoreThan90Percent(){
+    public void shouldApply60PercentExtraOnBaseFareForEconomyClassIfAvailableSeatsIsMoreThan90Percent() {
         searchCriteria.setNumberOfPassengers(1);
         searchCriteria.setTravelClassType(TravelClassType.ECONOMY);
         when(flightFareRepository.getBaseFare("F1", TravelClassType.ECONOMY)).thenReturn((double) 10000);
@@ -76,7 +76,7 @@ public class FlightFareServiceTest {
     }
 
     @Test
-    public void shouldBaseFareForEconomyClassIfAvailableSeatsIsLessThan40Percent(){
+    public void shouldBaseFareForEconomyClassIfAvailableSeatsIsLessThan40Percent() {
         searchCriteria.setNumberOfPassengers(1);
         searchCriteria.setTravelClassType(TravelClassType.ECONOMY);
         when(flightFareRepository.getBaseFare("F1", TravelClassType.ECONOMY)).thenReturn((double) 10000);
